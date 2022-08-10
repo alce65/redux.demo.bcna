@@ -16,12 +16,22 @@ export class RestRepository<T extends Item, Response>
     constructor(public url: string) {}
 
     get(id: string) {
-        return fetch(this.url + id).then((response) => response.json());
+        return fetch(this.url + id)
+            .then((response) => response.json())
+            .catch((error) => {
+                console.log(error);
+                return error;
+            });
     }
 
     async getAll() {
-        const response = await fetch(this.url);
-        return response.json();
+        try {
+            const response = await fetch(this.url);
+            return response.json();
+        } catch (error) {
+            console.log(error);
+            return error;
+        }
     }
 
     add(item: Partial<T>) {
